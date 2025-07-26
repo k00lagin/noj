@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>Noj</title>
+    </head>
+    <body>
+        <h1>Noj</h1>
+        {# This is a comment #}
+        <p>{{ 34 + 35 }}</p>
+        <ul>
+            {% for (int i = 0; i < 10; i++) { %}
+                <li>Item numba {{ i }}</li>
+            {% } %}
+        </ul>
+    </body>
+</html>
