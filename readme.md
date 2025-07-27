@@ -24,7 +24,7 @@ c3c compile-run examples.c3 noj.c3
 
 Noj currently supports only three types of tags:
 
-* statements (`{% forach (index, person : persons) { %}`);
+* statements (`{% foreach (index, person : persons) { %}`);
 
 * expressions (`{{ person.fullName }}`)
 * comments (`{# This will not be in the result text #}`).
