@@ -43,11 +43,11 @@ fn int transform(String input_path, String output_path) {
 	output.append("    for (usz i = 0; i < input.len; i++) {\n");
 	output.append("        char c = input[i];\n");
 	output.append("        switch (c) {\n");
-	output.append("            case '<': result.append(\"&lt;\");\n");
-	output.append("            case '>': result.append(\"&gt;\");\n");
-	output.append("            case '&': result.append(\"&amp;\");\n");
-	output.append("            case '\"': result.append(\"&quot;\");\n");
-	output.append("            case '\\'': result.append(\"&#39;\");\n");
+	output.append("            case '<': result.append(\"&lt;\"); break;\n");
+	output.append("            case '>': result.append(\"&gt;\"); break;\n");
+	output.append("            case '&': result.append(\"&amp;\"); break;\n");
+	output.append("            case '\"': result.append(\"&quot;\"); break;\n");
+	output.append("            case '\\'': result.append(\"&#39;\"); break;\n");
 	output.append("            default: result.append(c);\n");
 	output.append("        }\n");
 	output.append("    }\n");
@@ -131,11 +131,11 @@ fn int transform(String input_path, String output_path) {
 				for (usz j = 0; j < text.len; j++) {
 					char c = text[j];
 					switch (c) {
-						case '"': output.append("\\\"");
-						case '\\': output.append("\\\\");
-						case '\n': output.append("\\n");
-						case '\r': output.append("\\r");
-						case '\t': output.append("\\t");
+						case '"': output.append("\\\""); break;
+						case '\\': output.append("\\\\"); break;
+						case '\n': output.append("\\n"); break;
+						case '\r': output.append("\\r"); break;
+						case '\t': output.append("\\t"); break;
 						default: output.append(c);
 					}
 				}
