@@ -38,6 +38,21 @@ fn int transform(String input_path, String output_path) {
 	output.append("import std::io;\n");
 	output.append("import std::io::file;\n");
 	output.append("import std::core::string;\n");
+	output.append("fn String escape_html(String input) {\n");
+	output.append("    DString result;\n");
+	output.append("    for (usz i = 0; i < input.len; i++) {\n");
+	output.append("        char c = input[i];\n");
+	output.append("        switch (c) {\n");
+	output.append("            case '<': result.append(\"&lt;\");\n");
+	output.append("            case '>': result.append(\"&gt;\");\n");
+	output.append("            case '&': result.append(\"&amp;\");\n");
+	output.append("            case '\"': result.append(\"&quot;\");\n");
+	output.append("            case '\\'': result.append(\"&#39;\");\n");
+	output.append("            default: result.append(c);\n");
+	output.append("        }\n");
+	output.append("    }\n");
+	output.append("    return result.str_view();\n");
+	output.append("}\n");
 	output.append("fn void main() {\n");
 	output.append("DString sb;\n");
 
@@ -85,9 +100,9 @@ fn int transform(String input_path, String output_path) {
 		}
 
 		if (state == EXPRESSION && (next_state == TEXT || next_state == END)) {
-			output.append("sb.append(");
+			output.append("sb.append(escape_html(");
 			output.append(sb.str_view().trim());
-			output.append(");\n");
+			output.append("));\n");
 			sb.clear();
 		}
 
@@ -98,9 +113,34 @@ fn int transform(String input_path, String output_path) {
 		}
 
 		if (state == TEXT && (next_state != TEXT || next_state == END)) {
-			output.append("sb.append(`");
-			output.append(sb.str_view());
-			output.append("`);\n");
+			String text = sb.str_view();
+			bool has_backtick = false;
+			for (usz j = 0; j < text.len; j++) {
+				if (text[j] == '`') {
+					has_backtick = true;
+					break;
+				}
+			}
+			
+			if (!has_backtick) {
+				output.append("sb.append(`");
+				output.append(text);
+				output.append("`);\n");
+			} else {
+				output.append("sb.append(\"");
+				for (usz j = 0; j < text.len; j++) {
+					char c = text[j];
+					switch (c) {
+						case '"': output.append("\\\"");
+						case '\\': output.append("\\\\");
+						case '\n': output.append("\\n");
+						case '\r': output.append("\\r");
+						case '\t': output.append("\\t");
+						default: output.append(c);
+					}
+				}
+				output.append("\");\n");
+			}
 			sb.clear();
 		}
 
